@@ -1,29 +1,29 @@
-var Player = require('mpris-service');
+const Player = require('mpris-service')
 
-var player = Player({
+const player = Player({
 	name: 'YandexMusic',
 	identity: 'Node.js media player',
 	supportedUriSchemes: ['file'],
 	supportedMimeTypes: ['audio/mpeg', 'application/ogg'],
 	supportedInterfaces: ['player']
-});
+})
 
 player.getPosition = function() {
   // return the position of your player
-  return 0;
+  return 0
 }
 
 // Events
-var events = ['raise', 'quit', 'next', 'previous', 'pause', 'playpause', 'stop', 'play', 'seek', 'position', 'open', 'volume', 'loopStatus', 'shuffle'];
+const events = ['raise', 'quit', 'next', 'previous', 'pause', 'playpause', 'stop', 'play', 'seek', 'position', 'open', 'volume', 'loopStatus', 'shuffle']
 events.forEach(function (eventName) {
 	player.on(eventName, function () {
-		console.log('Event:', eventName, arguments);
-	});
-});
+		console.log('Event:', eventName, arguments)
+	})
+})
 
 player.on('quit', function () {
-	process.exit();
-});
+	process.exit()
+})
 
 setTimeout(function () {
 	// @see http://www.freedesktop.org/wiki/Specifications/mpris-spec/metadata/
@@ -34,17 +34,17 @@ setTimeout(function () {
 		'xesam:title': 'Lolol',
 		'xesam:album': '21',
 		'xesam:artist': ['Adele']
-	};
+	}
 
-	player.playbackStatus = Player.PLAYBACK_STATUS_PLAYING;
+	player.playbackStatus = Player.PLAYBACK_STATUS_PLAYING
 
-	console.log('Now playing: Lolol - Adele - 21');
+	console.log('Now playing: Lolol - Adele - 21')
 
 
-}, 1000);
+}, 1000)
 
 setTimeout(() => {
-  player.seeked(0);
-}, 2000);
+  player.seeked(0)
+}, 2000)
 
-export default player;
+export default player
