@@ -9,11 +9,6 @@ export function createPlayer(mainWindow) {
 		supportedInterfaces: ['player']
 	})
 
-	player.getPosition = function() {
-	  // return the position of your player
-	  return 0
-	}
-
 	// language=JavaScript
 	const scripts = `
 		class YandexMusicPlayer {
@@ -56,7 +51,14 @@ export function createPlayer(mainWindow) {
 		process.exit()
 	})
 
-	setTimeout(function () {
+	// Metadata
+
+	player.getPosition = () => {
+	  // return the position of your player
+	  return 0
+	}
+
+	setTimeout(() => {
 		// @see http://www.freedesktop.org/wiki/Specifications/mpris-spec/metadata/
 		player.metadata = {
 			'mpris:trackid': player.objectPath('track/0'),
