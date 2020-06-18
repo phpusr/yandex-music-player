@@ -15,9 +15,9 @@ const createWindow = () => {
     })
 
     mainWindow.loadURL('https://music.yandex.ru')
-    // mainWindow.loadURL(`file://${__dirname}/index.html`)
 
     mainWindow.webContents.openDevTools()
+
     mainWindow.webContents.on('did-finish-load', () => {
         createPlayer(mainWindow)
     })
