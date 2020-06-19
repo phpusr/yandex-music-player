@@ -47,11 +47,11 @@
     }
   },
   "dependencies": {
-    "electron-compile": "^6.4.4",
     "electron-squirrel-startup": "^1.0.0",
     "mpris-service": "^2.1.0"
   },
   "devDependencies": {
+    "electron-compile": "^6.4.4",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
