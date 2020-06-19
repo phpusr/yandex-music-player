@@ -9,31 +9,6 @@ export function createPlayer(mainWindow) {
 		supportedInterfaces: ['player']
 	})
 
-	// language=JavaScript
-	const scripts = `
-		class YandexMusicPlayer {
-			playPause() {
-				console.log('>> playPause')
-				let playPauseButtonDom = document.querySelector('.player-controls__btn_play')
-				if (!playPauseButtonDom) {
-					playPauseButtonDom = document.querySelector('.player-controls__btn_pause')
-				}
-				
-				playPauseButtonDom.click()
-			}
-			next() {
-			    console.log('>> next')
-			    document.querySelector('.player-controls__btn_next').click()
-			}
-			prev() {
-			    console.log('>> prev')
-				document.querySelector('.player-controls__btn_prev').click()
-			}
-		}
-		const app = new YandexMusicPlayer()
-	`
-	mainWindow.webContents.executeJavaScript(scripts)
-
 	// Events
 	player.on('playpause', () => {
 		mainWindow.webContents.executeJavaScript('app.playPause()')
@@ -58,21 +33,20 @@ export function createPlayer(mainWindow) {
 	  return 0
 	}
 
-	setTimeout(() => {
+	const ipc = require('electron').ipcMain
+
+	ipc.on('player:metadata', (event, metadata) => {
+		const {trackId, title, artists, playbackStatus, length, seek, artUrl} = metadata
 		// @see http://www.freedesktop.org/wiki/Specifications/mpris-spec/metadata/
 		player.metadata = {
-			'mpris:trackid': player.objectPath('track/0'),
-			'mpris:length': 60 * 1000 * 1000, // In microseconds
-			'mpris:artUrl': 'http://www.adele.tv/images/facebook/adele.jpg',
-			'xesam:title': 'Lolol',
-			'xesam:album': '21',
-			'xesam:artist': ['Adele']
+			'mpris:trackid': player.objectPath(trackId),
+			'mpris:length': length,
+			'mpris:artUrl': artUrl,
+			'xesam:title': title,
+			'xesam:album': '-',
+			'xesam:artist': [artists]
 		}
-
-		player.playbackStatus = Player.PLAYBACK_STATUS_PLAYING
-	}, 1000)
-
-	setTimeout(() => {
-	  player.seeked(0)
-	}, 2000)
+		player.playbackStatus = playbackStatus
+		player.seeked(seek)
+	})
 }

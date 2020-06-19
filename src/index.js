@@ -12,6 +12,10 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        webPreferences: {
+            preload: `${__dirname}/preload.js`,
+            nodeIntegration: true
+        }
     })
 
     mainWindow.loadURL('https://music.yandex.ru')
