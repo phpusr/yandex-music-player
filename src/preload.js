@@ -1,5 +1,3 @@
-window.$ = window.jQuery = require('./jquery.min.js')
-
 const ipc = require('electron').ipcRenderer
 
 function q(selector) {
@@ -9,24 +7,27 @@ function q(selector) {
 const PLAY_BUTTON = '.player-controls__btn_play'
 const PAUSE_BUTTON = '.player-controls__btn_pause'
 
+ipc.on('player:playPause', () => {
+    console.log('>> playPause')
+    q(PLAY_BUTTON).click()
+})
+
+ipc.on('player:next', () => {
+    console.log('>> next')
+    q('.player-controls__btn_next').click()
+})
+
+ipc.on('player:prev', () => {
+    console.log('>> prev')
+    q('.player-controls__btn_prev').click()
+})
+
 class YandexMusicPlayer {
     constructor() {
-        this.hideAds()
         setInterval(() => {
             this.sendMetadata()
+            this.hideAds()
         }, 1000)
-    }
-    playPause() {
-        console.log('>> playPause')
-        q(PLAY_BUTTON).click()
-    }
-    next() {
-        console.log('>> next')
-        q('.player-controls__btn_next').click()
-    }
-    prev() {
-        console.log('>> prev')
-        q('.player-controls__btn_prev').click()
     }
     sendMetadata() {
         this.getTrackId()

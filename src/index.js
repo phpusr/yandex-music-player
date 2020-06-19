@@ -13,12 +13,12 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            preload: `${__dirname}/preload.js`,
-            nodeIntegration: true
+            nodeIntegration: true,
+            webviewTag: true
         }
     })
 
-    mainWindow.loadURL('https://music.yandex.ru')
+    mainWindow.loadURL(`file://${__dirname}/index.html`)
 
     mainWindow.webContents.openDevTools()
 
