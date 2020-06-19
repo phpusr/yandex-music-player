@@ -1,4 +1,4 @@
-export function createPlayer(mainWindow) {
+function createPlayer(mainWindow) {
 	const Player = require('mpris-service')
 
 	const player = Player({
@@ -53,3 +53,5 @@ export function createPlayer(mainWindow) {
 		webContents.send('player:metadata', metadata)
 	})
 }
+
+module.exports = { createPlayer }

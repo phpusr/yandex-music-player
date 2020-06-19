@@ -1,5 +1,5 @@
-import {app, BrowserWindow} from 'electron'
-import {createPlayer} from './player.js'
+const {app, BrowserWindow} = require('electron')
+const {createPlayer} = require('./player.js')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
