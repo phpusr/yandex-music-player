@@ -9,17 +9,23 @@ export function createPlayer(mainWindow) {
 		supportedInterfaces: ['player']
 	})
 
+	const webContents = mainWindow.webContents
+
+	webContents.executeJavaScript(`
+		const app = new YandexMusicPlayer()
+	`)
+
 	// Events
 	player.on('playpause', () => {
-		mainWindow.webContents.executeJavaScript('app.playPause()')
+		webContents.executeJavaScript('app.playPause()')
 	})
 
 	player.on('next', () => {
-		mainWindow.webContents.executeJavaScript('app.next()')
+		webContents.executeJavaScript('app.next()')
 	})
 
 	player.on('previous', () => {
-		mainWindow.webContents.executeJavaScript('app.prev()')
+		webContents.executeJavaScript('app.prev()')
 	})
 
 	player.on('quit', function () {

@@ -11,6 +11,7 @@ const PAUSE_BUTTON = '.player-controls__btn_pause'
 
 class YandexMusicPlayer {
     constructor() {
+        this.hideAds()
         setInterval(() => {
             this.sendMetadata()
         }, 1000)
@@ -66,5 +67,12 @@ class YandexMusicPlayer {
 
         return (+array[0] * 60 + +array[1]) * 1000 * 1000
     }
+    hideAds() {
+        setTimeout(() => {
+            q('.d-overhead__close button').click()
+            q('.bar-below_plus, .notify').style.display = 'none'
+        }, 1000)
+    }
 }
-window.app = new YandexMusicPlayer()
+
+window.YandexMusicPlayer = YandexMusicPlayer
