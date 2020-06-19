@@ -50,5 +50,6 @@ export function createPlayer(mainWindow) {
 		}
 		player.playbackStatus = playbackStatus
 		player.seeked(seek)
+		webContents.send('player:metadata', metadata)
 	})
 }

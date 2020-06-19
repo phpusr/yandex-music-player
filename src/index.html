@@ -22,7 +22,12 @@
     const ipc = require('electron').ipcRenderer
     const webview = document.querySelector('#ym')
     webview.addEventListener('dom-ready', () => {
-        webview.openDevTools();
+        if (false) webview.openDevTools()
+
+        ipc.on('player:metadata', (e, {artists, title}) => {
+            document.title = `Yandex.Music (${artists} - ${title})`
+        });
+
         ['player:playPause', 'player:next', 'player:prev'].forEach(e => {
             ipc.on(e, () => webview.send(e))
         })
