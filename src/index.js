@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu} = require('electron')
+const {app, BrowserWindow, Menu, BrowserView} = require('electron')
 const {createPlayer} = require('./player.js')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -10,27 +10,26 @@ let mainWindow
 let webContents
 
 function createWindow() {
-    mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-            nodeIntegration: true,
-            webviewTag: true
-        }
-    })
-
-    webContents = mainWindow.webContents
-
-    mainWindow.loadURL(`file://${__dirname}/index.html`)
-
-    webContents.openDevTools()
-
-    webContents.on('did-finish-load', () => {
-        createPlayer(mainWindow)
-    })
-
+    // Main Window
+    mainWindow = new BrowserWindow({title: 'Yandex Music Player'})
     mainWindow.on('closed', () => {
         mainWindow = null
+    })
+
+    // Player View
+    const view = new BrowserView({
+        webPreferences: {
+            preload: `${__dirname}/preload.js`
+        }
+    })
+    mainWindow.setBrowserView(view)
+    view.setBounds({x: 0, y: 0, width: 800, height: 600})
+    view.setAutoResize({width: true, height: true})
+    webContents = view.webContents
+    webContents.loadURL('https://music.yandex.ru')
+    webContents.openDevTools()
+    webContents.on('did-finish-load', () => {
+        createPlayer(webContents, mainWindow)
     })
 }
 
@@ -39,22 +38,17 @@ function createMenu() {
         label: 'File',
         submenu : [{
             label: 'Player',
-            click: () => {
-                console.log('>> player')
-                webContents.send('go:player')
-            }
+            click: () => webContents.loadURL('https://music.yandex.ru')
         }, {
             label: 'Log in',
-            click: () => {
-                console.log('>> click')
-                webContents.send('go:login')
-            }
+            click: () => webContents.loadURL('https://passport.yandex.ru')
         }, {
             type: 'separator'
         }, {
             role: 'reload'
         }, {
-            role: 'toggledevtools'
+            label: 'Open Dev Tools',
+            click: () => webContents.openDevTools()
         }, {
             type: 'separator'
         }, {

@@ -1,4 +1,4 @@
-function createPlayer(mainWindow) {
+function createPlayer(webContents, window) {
 	const Player = require('mpris-service')
 
 	const player = Player({
@@ -9,7 +9,7 @@ function createPlayer(mainWindow) {
 		supportedInterfaces: ['player']
 	})
 
-	const webContents = mainWindow.webContents
+	webContents.executeJavaScript(`const app = new YandexMusicPlayer()`)
 
 	// Events
 	player.on('playpause', () => {
@@ -39,6 +39,7 @@ function createPlayer(mainWindow) {
 
 	ipc.on('player:metadata', (event, metadata) => {
 		const {trackId, title, artists, playbackStatus, length, seek, artUrl} = metadata
+		window.setTitle(`${artists} - ${title}`)
 		// @see http://www.freedesktop.org/wiki/Specifications/mpris-spec/metadata/
 		player.metadata = {
 			'mpris:trackid': player.objectPath(trackId),
