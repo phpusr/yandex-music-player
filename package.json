@@ -1,6 +1,6 @@
 {
-  "name": "simple-app",
-  "productName": "simple-app",
+  "name": "yandex-music-player",
+  "productName": "yandex-music-player",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
@@ -32,7 +32,7 @@
         "packageManager": "yarn"
       },
       "electronWinstallerConfig": {
-        "name": "simple_app"
+        "name": "yandex_music_player"
       },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
@@ -42,7 +42,7 @@
       },
       "windowsStoreConfig": {
         "packageName": "",
-        "name": "simpleapp"
+        "name": "yandexmusicplayer"
       }
     }
   },
