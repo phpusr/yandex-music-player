@@ -23,7 +23,7 @@ function createWindow() {
         }
     })
     mainWindow.setBrowserView(view)
-    view.setBounds({x: 0, y: 0, width: 800, height: 600})
+    view.setBounds({x: 0, y: 0, width: 800, height: 576})
     view.setAutoResize({width: true, height: true})
     webContents = view.webContents
     webContents.loadURL('https://music.yandex.ru')
