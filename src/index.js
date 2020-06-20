@@ -8,6 +8,26 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 let mainWindow
 let webContents
+process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+const isProduction = process.env.NODE_ENV === 'production'
+
+main()
+
+function main() {
+    createMenu()
+
+    app.on('ready', createWindow)
+    app.on('window-all-closed', () => {
+        if (process.platform !== 'darwin') {
+            app.quit()
+        }
+    })
+    app.on('activate', () => {
+        if (mainWindow === null) {
+            createWindow()
+        }
+    })
+}
 
 function createWindow() {
     // Main Window
@@ -27,7 +47,9 @@ function createWindow() {
     view.setAutoResize({width: true, height: true})
     webContents = view.webContents
     webContents.loadURL('https://music.yandex.ru')
-    webContents.openDevTools()
+    if (!isProduction) {
+        webContents.openDevTools()
+    }
     webContents.on('did-finish-load', () => {
         createPlayer(webContents, mainWindow)
     })
@@ -57,19 +79,3 @@ function createMenu() {
     }]
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 }
-
-createMenu()
-
-app.on('ready', createWindow)
-
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
-})
-
-app.on('activate', () => {
-    if (mainWindow === null) {
-        createWindow()
-    }
-})
