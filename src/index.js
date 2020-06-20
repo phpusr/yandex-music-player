@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Menu} = require('electron')
 const {createPlayer} = require('./player.js')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -7,6 +7,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 let mainWindow
+let webContents
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -18,11 +19,13 @@ function createWindow() {
         }
     })
 
+    webContents = mainWindow.webContents
+
     mainWindow.loadURL(`file://${__dirname}/index.html`)
 
-    mainWindow.webContents.openDevTools()
+    webContents.openDevTools()
 
-    mainWindow.webContents.on('did-finish-load', () => {
+    webContents.on('did-finish-load', () => {
         createPlayer(mainWindow)
     })
 
@@ -30,6 +33,38 @@ function createWindow() {
         mainWindow = null
     })
 }
+
+function createMenu() {
+    const template = [{
+        label: 'File',
+        submenu : [{
+            label: 'Player',
+            click: () => {
+                console.log('>> player')
+                webContents.send('go:player')
+            }
+        }, {
+            label: 'Log in',
+            click: () => {
+                console.log('>> click')
+                webContents.send('go:login')
+            }
+        }, {
+            type: 'separator'
+        }, {
+            role: 'reload'
+        }, {
+            role: 'toggledevtools'
+        }, {
+            type: 'separator'
+        }, {
+            role: 'quit'
+        }]
+    }]
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+}
+
+createMenu()
 
 app.on('ready', createWindow)
 

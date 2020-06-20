@@ -24,6 +24,14 @@
     webview.addEventListener('dom-ready', () => {
         if (false) webview.openDevTools()
 
+        ipc.on('go:login', () => {
+            webview.setAttribute('src', 'https://passport.yandex.ru')
+        })
+
+        ipc.on('go:player', () => {
+            webview.setAttribute('src', 'https://music.yandex.ru')
+        })
+
         ipc.on('player:metadata', (e, {artists, title}) => {
             document.title = `Yandex.Music (${artists} - ${title})`
         });
