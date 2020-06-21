@@ -7,7 +7,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
-    "package": "electron-forge package",
+    "package-linux": "electron-forge package --arch x64 --platform linux",
+    "package-win": "electron-forge package --arch ia32 --platform win32",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint src --color"
@@ -31,7 +32,12 @@
       },
       "electronPackagerConfig": {
         "packageManager": "yarn",
-        "ignore": [".idea", "dist"]
+        "ignore": [".idea", "dist"],
+        "icon": "assets/icons/icon.ico",
+        "win32metadata":{
+          "ProductName": "Yandex Music Player",
+          "CompanyName": "phpusr"
+        }
       },
       "electronWinstallerConfig": {
         "name": "yandex_music_player"
