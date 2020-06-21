@@ -2,7 +2,7 @@
   "name": "yandex-music-player",
   "productName": "yandex-music-player",
   "version": "1.0.0",
-  "description": "Yandex Music desktop Electron application ",
+  "description": "Yandex Music desktop Electron application with MPRIS support",
   "homepage": "https://github.com/phpusr/yandex-music-player",
   "main": "src/index.js",
   "scripts": {
