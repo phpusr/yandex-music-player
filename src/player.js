@@ -9,8 +9,6 @@ function createPlayer(webContents, window) {
 		supportedInterfaces: ['player']
 	})
 
-	webContents.executeJavaScript(`const app = new YandexMusicPlayer()`)
-
 	// Events
 	player.on('playpause', () => {
 		webContents.send('player:playPause')

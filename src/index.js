@@ -1,5 +1,4 @@
 const {app, BrowserWindow, Menu, BrowserView} = require('electron')
-const {createPlayer} = require('./player.js')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -10,6 +9,7 @@ let mainWindow
 let webContents
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 const isProduction = process.env.NODE_ENV === 'production'
+const isLinux = process.platform === 'linux'
 
 main()
 
@@ -43,7 +43,7 @@ function createWindow() {
         }
     })
     mainWindow.setBrowserView(view)
-    view.setBounds({x: 0, y: 0, width: 800, height: 576})
+    view.setBounds({x: 0, y: 0, width: 800, height: isLinux ? 576 : 540})
     view.setAutoResize({width: true, height: true})
     webContents = view.webContents
     webContents.loadURL('https://music.yandex.ru')
@@ -51,7 +51,11 @@ function createWindow() {
         webContents.openDevTools()
     }
     webContents.on('did-finish-load', () => {
-        createPlayer(webContents, mainWindow)
+        if (isLinux) {
+            const {createPlayer} = require('./player.js')
+            createPlayer(webContents, mainWindow)
+        }
+        webContents.executeJavaScript(`const app = new YandexMusicPlayer()`)
     })
 }
 
