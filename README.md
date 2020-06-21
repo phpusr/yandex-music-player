@@ -11,6 +11,22 @@ It provides a mechanism for discovery, querying and basic playback control of co
 
 ## How to run
 
+### Arch / Manjaro Linux
+
+Install from [AUR](https://aur.archlinux.org/packages/yandex-music-player/)
+
+```bash
+yay -S yandex-music-player
+```
+
+Run
+
+```bash
+ymp
+```
+
+### Other
+
 Install [Node.js & NPM](https://nodejs.org/)
 
 Install [Electron](https://www.electronjs.org/)
