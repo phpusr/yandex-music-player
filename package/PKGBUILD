@@ -2,7 +2,7 @@
 pkgname=yandex-music-player
 pkgver=1.0.0
 pkgrel=1
-pkgdesc='Yandex.Music Player'
+pkgdesc='Yandex Music desktop Electron application '
 arch=('x86_64')
 url='https://github.com/phpusr/yandex-music-player'
 license=('GPL')
