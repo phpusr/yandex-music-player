@@ -8,7 +8,7 @@
   "scripts": {
     "start": "electron-forge start",
     "package-linux": "electron-forge package --arch x64 --platform linux",
-    "package-win": "electron-forge package --arch ia32 --platform win32",
+    "package-win": "electron-forge package --arch ia32 --platform win32 && cd out/yandex-music-player-win32-ia32 && zip -r ../yandex-music-player-win32-ia32.zip * ",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint src --color"
