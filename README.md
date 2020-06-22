@@ -25,7 +25,7 @@ Run
 ymp
 ```
 
-### Windows
+### Windows 7/10
 
 Download and unzip [yandex-music-player-win32-ia32.zip](https://github.com/phpusr/yandex-music-player/releases)
 
