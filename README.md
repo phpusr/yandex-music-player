@@ -25,6 +25,10 @@ Run
 ymp
 ```
 
+### Windows
+
+Download and unzip [yandex-music-player-win32-ia32.zip](https://github.com/phpusr/yandex-music-player/releases)
+
 ### Other
 
 Install [Node.js & NPM](https://nodejs.org/)
