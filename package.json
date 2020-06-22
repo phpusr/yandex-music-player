@@ -34,7 +34,7 @@
         "packageManager": "yarn",
         "ignore": [".idea", "dist"],
         "icon": "assets/icons/icon.ico",
-        "win32metadata":{
+        "win32metadata": {
           "ProductName": "Yandex Music Player",
           "CompanyName": "phpusr"
         }
@@ -56,7 +56,6 @@
   },
   "dependencies": {
     "electron-compile": "^6.4.4",
-    "electron-squirrel-startup": "^1.0.0",
     "mpris-service": "^2.1.0"
   },
   "devDependencies": {
