@@ -8,20 +8,22 @@ const PLAY_BUTTON = '.player-controls__btn_play'
 const PAUSE_BUTTON = '.player-controls__btn_pause'
 
 ipc.on('player:playPause', () => {
-    console.log('>> playPause')
-    q(PLAY_BUTTON).click()
+    externalAPI.togglePause()
 })
 
 ipc.on('player:next', () => {
     console.log('>> next')
-    q('.player-controls__btn_next').click()
+    externalAPI.next()
 })
 
 ipc.on('player:prev', () => {
     console.log('>> prev')
-    q('.player-controls__btn_prev').click()
+    externalAPI.prev()
 })
 
+ipc.on('player:setPosition', (ev, position) => {
+    externalAPI.setPosition(position / 1000000)
+})
 class YandexMusicPlayer {
     constructor() {
         setInterval(() => {
@@ -29,13 +31,17 @@ class YandexMusicPlayer {
             this.hideAds()
         }, 1000)
     }
-    sendMetadata() {
-        this.getTrackId()
+    sendMetadata () {
+        const currentTrack = externalAPI.getCurrentTrack()
+        if (!currentTrack) {
+            return
+        }
         const metadata = {
             trackId: this.getTrackId(),
-            title: q('.track__title').innerText,
-            artists: q('.track__artists').innerText,
-            artUrl: q('.entity-cover__image').getAttribute('src'),
+            title: currentTrack.title,
+            album: currentTrack.album.title,
+            artists: currentTrack.artists.map(a => a.title),
+            artUrl: 'https://' + currentTrack.cover.replace('%%', '300x300'),
             length: this.timeStringToMicroseconds(q('.progress__right').innerText),
             seek: this.timeStringToMicroseconds(q('.progress__left').innerText)
         }

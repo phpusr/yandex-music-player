@@ -10,7 +10,10 @@ function createPlayer(webContents, window) {
 	})
 
 	// Events
-	player.on('playpause', () => {
+	player.on('play', () => {
+		webContents.send('player:playPause')
+	})
+	player.on('pause', () => {
 		webContents.send('player:playPause')
 	})
 
@@ -21,6 +24,11 @@ function createPlayer(webContents, window) {
 	player.on('previous', () => {
 		webContents.send('player:prev')
 	})
+	player.on('position', (data) => {
+		webContents.send('player:setPosition', data.position)
+	})
+
+
 
 	player.on('quit', () => {
 		process.exit()
@@ -36,16 +44,16 @@ function createPlayer(webContents, window) {
 	const ipc = require('electron').ipcMain
 
 	ipc.on('player:metadata', (event, metadata) => {
-		const {trackId, title, artists, playbackStatus, length, seek, artUrl} = metadata
+		const {trackId, title, artists, playbackStatus, length, seek, artUrl, album} = metadata
 		window.setTitle(`${artists} - ${title}`)
 		// @see http://www.freedesktop.org/wiki/Specifications/mpris-spec/metadata/
 		player.metadata = {
 			'mpris:trackid': player.objectPath(trackId),
 			'mpris:length': length,
-			'mpris:artUrl': artUrl,
+			'mpris:artUrl':artUrl,
 			'xesam:title': title,
-			'xesam:album': '-',
-			'xesam:artist': [artists]
+			'xesam:album': album,
+			'xesam:artist': artists
 		}
 		player.playbackStatus = playbackStatus
 		player.seeked(seek)
