@@ -4,6 +4,10 @@
     "import/extensions": 0,
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": [2, { "ignore": ["electron"] }],
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "semi": 0,
+    "comma-dangle": 0,
+    "class-methods-use-this": 0,
+    "no-use-before-define": 0
   }
 }

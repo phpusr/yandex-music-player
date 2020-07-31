@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, BrowserView} = require('electron')
+const { app, BrowserWindow, Menu, BrowserView } = require('electron')
 
 let mainWindow
 let webContents
@@ -9,72 +9,73 @@ const isLinux = process.platform === 'linux'
 main()
 
 function main() {
-    createMenu()
+  createMenu()
 
-    app.on('ready', createWindow)
-    app.on('window-all-closed', () => {
-        if (process.platform !== 'darwin') {
-            app.quit()
-        }
-    })
-    app.on('activate', () => {
-        if (mainWindow === null) {
-            createWindow()
-        }
-    })
+  app.on('ready', createWindow)
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit()
+    }
+  })
+  app.on('activate', () => {
+    if (mainWindow === null) {
+      createWindow()
+    }
+  })
 }
 
 function createWindow() {
-    // Main Window
-    mainWindow = new BrowserWindow({title: 'Yandex Music Player'})
-    mainWindow.on('closed', () => {
-        mainWindow = null
-    })
+  // Main Window
+  mainWindow = new BrowserWindow({ title: 'Yandex Music Player' })
+  mainWindow.on('closed', () => {
+    mainWindow = null
+  })
 
-    // Player View
-    const view = new BrowserView({
-        webPreferences: {
-            preload: `${__dirname}/preload.js`
-        }
-    })
-    mainWindow.setBrowserView(view)
-    view.setBounds({x: 0, y: 0, width: 800, height: isLinux ? 576 : 540})
-    view.setAutoResize({width: true, height: true})
-    webContents = view.webContents
-    webContents.loadURL('https://music.yandex.ru')
-    if (!isProduction) {
-        webContents.openDevTools()
+  // Player View
+  const view = new BrowserView({
+    webPreferences: {
+      preload: `${__dirname}/preload.js`
     }
-    webContents.on('did-finish-load', () => {
-        if (isLinux) {
-            const {createPlayer} = require('./player.js')
-            createPlayer(webContents, mainWindow)
-        }
-        webContents.executeJavaScript(`const app = new YandexMusicPlayer()`)
-    })
+  })
+  mainWindow.setBrowserView(view)
+  view.setBounds({ x: 0, y: 0, width: 800, height: isLinux ? 576 : 540 })
+  view.setAutoResize({ width: true, height: true })
+  webContents = view.webContents
+  webContents.loadURL('https://music.yandex.ru')
+  if (!isProduction) {
+    webContents.openDevTools()
+  }
+  webContents.on('did-finish-load', () => {
+    if (isLinux) {
+      // eslint-disable-next-line global-require
+      const { createPlayer } = require('./player.js')
+      createPlayer(webContents, mainWindow)
+    }
+    webContents.executeJavaScript('const app = new YandexMusicPlayer()')
+  })
 }
 
 function createMenu() {
-    const template = [{
-        label: 'File',
-        submenu : [{
-            label: 'Player',
-            click: () => webContents.loadURL('https://music.yandex.ru')
-        }, {
-            label: 'Log in',
-            click: () => webContents.loadURL('https://passport.yandex.ru')
-        }, {
-            type: 'separator'
-        }, {
-            role: 'reload'
-        }, {
-            label: 'Open Dev Tools',
-            click: () => webContents.openDevTools()
-        }, {
-            type: 'separator'
-        }, {
-            role: 'quit'
-        }]
+  const template = [{
+    label: 'File',
+    submenu: [{
+      label: 'Player',
+      click: () => webContents.loadURL('https://music.yandex.ru')
+    }, {
+      label: 'Log in',
+      click: () => webContents.loadURL('https://passport.yandex.ru')
+    }, {
+      type: 'separator'
+    }, {
+      role: 'reload'
+    }, {
+      label: 'Open Dev Tools',
+      click: () => webContents.openDevTools()
+    }, {
+      type: 'separator'
+    }, {
+      role: 'quit'
     }]
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+  }]
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 }
