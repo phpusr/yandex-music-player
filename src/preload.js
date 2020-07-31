@@ -1,13 +1,12 @@
 /* global document window externalAPI */
 
+const ONE_M = 1000 * 1000
+
 const ipc = require('electron').ipcRenderer
 
 function q(selector) {
   return document.querySelector(selector)
 }
-
-const PLAY_BUTTON = '.player-controls__btn_play'
-const PAUSE_BUTTON = '.player-controls__btn_pause'
 
 ipc.on('player:play', () => {
   externalAPI.togglePause('')
@@ -30,7 +29,7 @@ ipc.on('player:prev', () => {
 })
 
 ipc.on('player:setPosition', (ev, position) => {
-  externalAPI.setPosition(position / 1000000)
+  externalAPI.setPosition(position / ONE_M)
 })
 
 class YandexMusicPlayer {
@@ -42,46 +41,28 @@ class YandexMusicPlayer {
   }
   sendMetadata() {
     const currentTrack = externalAPI.getCurrentTrack()
+
     if (!currentTrack) {
       return
     }
+
     const metadata = {
-      trackId: this.getTrackId(),
+      trackId: currentTrack.link.substr(1),
       title: currentTrack.title,
       album: currentTrack.album.title,
       artists: currentTrack.artists.map(a => a.title),
       artUrl: `https://${currentTrack.cover.replace('%%', '300x300')}`,
-      length: this.timeStringToMicroseconds(q('.progress__right').innerText),
-      seek: this.timeStringToMicroseconds(q('.progress__left').innerText)
+      length: currentTrack.duration * ONE_M,
+      seek: externalAPI.getProgress().position * ONE_M
     }
 
-    if (q(PAUSE_BUTTON)) {
+    if (externalAPI.isPlaying()) {
       metadata.playbackStatus = 'Playing'
-    } else if (q(PLAY_BUTTON)) {
-      metadata.playbackStatus = 'Paused'
     } else {
-      metadata.playbackStatus = 'Stopped'
+      metadata.playbackStatus = 'Paused'
     }
 
     ipc.send('player:metadata', metadata)
-  }
-  getTrackId() {
-    const title = q('.track__title')
-    if (!title) {
-      return 0
-    }
-
-    const href = title.getAttribute('href')
-    return href.substr(1)
-  }
-  timeStringToMicroseconds(timeString) {
-    if (!timeString) {
-      return 0
-    }
-
-    const array = timeString.split(':')
-
-    return ((+array[0] * 60) + +array[1]) * 1000 * 1000
   }
   hideAds() {
     const closeAdButton = q('.d-overhead__close button')
