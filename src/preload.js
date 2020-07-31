@@ -9,6 +9,14 @@ function q(selector) {
 const PLAY_BUTTON = '.player-controls__btn_play'
 const PAUSE_BUTTON = '.player-controls__btn_pause'
 
+ipc.on('player:play', () => {
+  externalAPI.togglePause('')
+})
+
+ipc.on('player:pause', () => {
+  externalAPI.togglePause('PAUSE')
+})
+
 ipc.on('player:playPause', () => {
   externalAPI.togglePause()
 })

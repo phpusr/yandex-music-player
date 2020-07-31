@@ -12,9 +12,14 @@ function createPlayer(webContents, window) {
 
   // Events
   player.on('play', () => {
-    webContents.send('player:playPause')
+    webContents.send('player:play')
   })
+
   player.on('pause', () => {
+    webContents.send('player:pause')
+  })
+
+  player.on('playpause', () => {
     webContents.send('player:playPause')
   })
 
