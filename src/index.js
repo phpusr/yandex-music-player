@@ -51,7 +51,7 @@ function createWindow() {
       const { createPlayer } = require('./player.js')
       createPlayer(webContents, mainWindow)
     }
-    webContents.executeJavaScript('const app = new YandexMusicPlayer()')
+    webContents.executeJavaScript('const app = new YandexMusicPlayer(externalAPI)')
   })
 }
 

@@ -1,8 +1,8 @@
 function createPlayer(webContents, window) {
   // eslint-disable-next-line global-require
-  const Player = require('mpris-service')
+  const MprisService = require('mpris-service')
 
-  const player = Player({
+  const mprisService = MprisService({
     name: 'YandexMusic',
     identity: 'YandexMusic media player',
     supportedUriSchemes: ['file'],
@@ -11,37 +11,37 @@ function createPlayer(webContents, window) {
   })
 
   // Events
-  player.on('play', () => {
+  mprisService.on('play', () => {
     webContents.send('player:play')
   })
 
-  player.on('pause', () => {
+  mprisService.on('pause', () => {
     webContents.send('player:pause')
   })
 
-  player.on('playpause', () => {
+  mprisService.on('playpause', () => {
     webContents.send('player:playPause')
   })
 
-  player.on('next', () => {
+  mprisService.on('next', () => {
     webContents.send('player:next')
   })
 
-  player.on('previous', () => {
+  mprisService.on('previous', () => {
     webContents.send('player:prev')
   })
-  player.on('position', (data) => {
+  mprisService.on('position', (data) => {
     webContents.send('player:setPosition', data.position)
   })
 
-  player.on('quit', () => {
+  mprisService.on('quit', () => {
     process.exit()
   })
 
   // Metadata
 
   // return the position of your player
-  player.getPosition = () => 0
+  mprisService.getPosition = () => 0
 
   // eslint-disable-next-line global-require
   const ipc = require('electron').ipcMain
@@ -50,16 +50,16 @@ function createPlayer(webContents, window) {
     const { trackId, title, artists, playbackStatus, length, seek, artUrl, album } = metadata
     window.setTitle(`${artists} - ${title}`)
     // @see http://www.freedesktop.org/wiki/Specifications/mpris-spec/metadata/
-    player.metadata = {
-      'mpris:trackid': player.objectPath(trackId),
+    mprisService.metadata = {
+      'mpris:trackid': mprisService.objectPath(trackId),
       'mpris:length': length,
       'mpris:artUrl': artUrl,
       'xesam:title': title,
       'xesam:album': album,
       'xesam:artist': artists
     }
-    player.playbackStatus = playbackStatus
-    player.seeked(seek)
+    mprisService.playbackStatus = playbackStatus
+    mprisService.seeked(seek)
     webContents.send('player:metadata', metadata)
   })
 }
