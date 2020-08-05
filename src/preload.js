@@ -58,8 +58,8 @@ class YandexMusicPlayer {
       album: currentTrack.album.title,
       artists: currentTrack.artists.map(a => a.title),
       artUrl: `https://${currentTrack.cover.replace('%%', '300x300')}`,
-      length: currentTrack.duration * ONE_M,
-      seek: this.externalAPI.getProgress().position * ONE_M
+      length: this.secondsToMicroSeconds(currentTrack.duration),
+      seek: this.secondsToMicroSeconds(this.externalAPI.getProgress().position)
     }
 
     if (this.externalAPI.isPlaying()) {
@@ -69,6 +69,10 @@ class YandexMusicPlayer {
     }
 
     ipc.send('player:metadata', metadata)
+  }
+
+  secondsToMicroSeconds(seconds) {
+    return Math.round(seconds * ONE_M)
   }
 
   hideAds() {
