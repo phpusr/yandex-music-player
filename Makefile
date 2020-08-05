@@ -6,14 +6,14 @@ help:
 
 ##@ AUR dist creator
 
-make-dist: ## Make dist
+dist: clean-dist ## Make dist
 	cd dist && makepkg
 
-update-dist: ## Update dist metadata
+update: ## Update dist metadata
 	cd dist && updpkgsums && mksrcinfo
 
-install-dist: ## Install dist
+install: ## Install dist
 	sudo pacman -U dist/yandex-music-player-*.pkg.tar.xz
 
-clean-dist: ## Clean dist dir
+clean: ## Clean dist dir
 	cd dist && git clean -fdx
