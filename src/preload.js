@@ -76,14 +76,23 @@ class YandexMusicPlayer {
   }
 
   hideAds() {
-    const adClasses = ['.d-overhead__close button', '.payment-plus__header-close']
-    adClasses.forEach((adClass) => {
-      const closeAdButton = q(adClass)
-      if (closeAdButton) {
-        closeAdButton.click()
+    // Clicking by close button
+    const CloseAdButtonClasses = ['.d-overhead__close button', '.payment-plus__header-close']
+    CloseAdButtonClasses.forEach((adClass) => {
+      const adButtonDom = q(adClass)
+      if (adButtonDom) {
+        adButtonDom.click()
       }
     })
-    q('.bar-below_plus, .notify').style.display = 'none'
+
+    // Hiding ads
+    const hideAdClasses = ['.bar-below_plus', '.notify', '.bar__branding']
+    hideAdClasses.forEach((adClass) => {
+      const adDom = q(adClass)
+      if (adDom) {
+        adDom.style.display = 'none'
+      }
+    })
   }
 }
 
