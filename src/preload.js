@@ -29,7 +29,7 @@ class YandexMusicPlayer {
     })
 
     ipc.on('player:playPause', () => {
-      this.externalAPI.togglePause()
+      q('.player-controls__btn_play').click()
     })
 
     ipc.on('player:next', () => {
