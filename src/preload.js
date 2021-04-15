@@ -76,10 +76,13 @@ class YandexMusicPlayer {
   }
 
   hideAds() {
-    const closeAdButton = q('.d-overhead__close button')
-    if (closeAdButton) {
-      closeAdButton.click()
-    }
+    const adClasses = ['.d-overhead__close button', '.payment-plus__header-close']
+    adClasses.forEach((adClass) => {
+      const closeAdButton = q(adClass)
+      if (closeAdButton) {
+        closeAdButton.click()
+      }
+    })
     q('.bar-below_plus, .notify').style.display = 'none'
   }
 }
