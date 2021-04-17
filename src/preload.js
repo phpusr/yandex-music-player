@@ -1,7 +1,6 @@
 /* global document window */
 
 const ONE_M = 1000 * 1000
-const PLAY_BUTTON = '.player-controls__btn_play'
 
 const ipc = require('electron').ipcRenderer
 
@@ -30,7 +29,7 @@ class YandexMusicPlayer {
     })
 
     ipc.on('player:playPause', () => {
-      q(PLAY_BUTTON).click()
+      q('.player-controls__btn_play').click()
     })
 
     ipc.on('player:next', () => {
@@ -87,20 +86,13 @@ class YandexMusicPlayer {
     })
 
     // Hiding ads
-    const hideAdClasses = ['.bar-below_plus', '.notify', '.bar__branding']
+    const hideAdClasses = ['.bar-below_plus', '.notify', '.bar__branding', '.crackdown-popup__close']
     hideAdClasses.forEach((adClass) => {
       const adDom = q(adClass)
       if (adDom) {
         adDom.style.display = 'none'
       }
     })
-
-    // Hide ad with auto pause
-    const addButtonDom = q('.crackdown-popup__close')
-    if (addButtonDom) {
-      addButtonDom.click()
-      q(PLAY_BUTTON).click()
-    }
   }
 }
 
