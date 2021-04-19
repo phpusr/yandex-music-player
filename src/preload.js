@@ -77,7 +77,7 @@ class YandexMusicPlayer {
 
   hideAds() {
     // Clicking by close button
-    const CloseAdButtonClasses = ['.d-overhead__close button', '.payment-plus__header-close']
+    const CloseAdButtonClasses = ['.d-overhead__close button', '.payment-plus__header-close', '.crackdown-popup__close']
     CloseAdButtonClasses.forEach((adClass) => {
       const adButtonDom = q(adClass)
       if (adButtonDom) {
@@ -86,7 +86,7 @@ class YandexMusicPlayer {
     })
 
     // Hiding ads
-    const hideAdClasses = ['.bar-below_plus', '.notify', '.bar__branding', '.crackdown-popup__close']
+    const hideAdClasses = ['.bar-below_plus', '.notify', '.bar__branding']
     hideAdClasses.forEach((adClass) => {
       const adDom = q(adClass)
       if (adDom) {
