@@ -6,6 +6,9 @@ help:
 
 ##@ AUR dist creator
 
+prod-run: ## Run in production mode
+	electron5 .
+
 dist: clean ## Make dist
 	cd dist && makepkg
 
