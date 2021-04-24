@@ -6,6 +6,8 @@ help:
 
 ##@ AUR dist creator
 
+# Updating dist: "make dist; make update dist install"
+
 prod-run: ## Run in production mode
 	electron5 .
 
