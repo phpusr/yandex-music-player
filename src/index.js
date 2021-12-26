@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, BrowserView } = require('electron')
+const { app, BrowserWindow, Menu, BrowserView, nativeTheme } = require('electron')
 
 let mainWindow
 let webContents
@@ -26,7 +26,10 @@ function main() {
 
 function createWindow() {
   // Main Window
-  mainWindow = new BrowserWindow({ title: 'Yandex Music Player' })
+  mainWindow = new BrowserWindow({
+    title: 'Yandex Music Player',
+    icon: getIcon(),
+  })
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -78,4 +81,10 @@ function createMenu() {
     }]
   }]
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+}
+
+function getIcon() {
+  const isDarkMode = nativeTheme.shouldUseDarkColors
+  const iconName = isDarkMode ? 'icon_add' : 'icon_main'
+  return `${__dirname}/../assets/icons/${iconName}.png`
 }
