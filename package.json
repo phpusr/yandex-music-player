@@ -11,63 +11,51 @@
     "package-win": "electron-forge package --arch ia32 --platform win32 && cd out/yandex-music-player-win32-ia32 && zip -r ../yandex-music-player-win32-ia32.zip * ",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint src --color"
+    "lint": "echo \"No linting configured\""
   },
   "keywords": [],
-  "author": "phpusr",
-  "license": "GPL",
+  "author": {
+    "name": "phpusr",
+    "email": "phpusr@gmail.com"
+  },
+  "license": "MIT",
   "config": {
     "forge": {
-      "make_targets": {
-        "win32": [
-          "squirrel"
-        ],
-        "darwin": [
-          "zip"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {
-        "packageManager": "yarn",
-        "ignore": [".idea", "dist"],
-        "icon": "assets/icons/icon.ico",
-        "win32metadata": {
-          "ProductName": "Yandex Music Player",
-          "CompanyName": "phpusr"
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "yandex_music_player"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
         }
-      },
-      "electronWinstallerConfig": {
-        "name": "yandex_music_player"
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "",
-        "name": ""
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "yandexmusicplayer"
-      }
+      ]
     }
   },
   "dependencies": {
-    "electron-compile": "^6.4.4",
+    "electron-squirrel-startup": "^1.0.0",
     "mpris-service": "^2.1.0"
   },
   "devDependencies": {
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "electron-forge": "^5.2.4",
-    "electron-prebuilt-compile": "8.2.0",
-    "eslint": "^4",
-    "eslint-config-airbnb": "^15",
-    "eslint-plugin-import": "^2",
-    "eslint-plugin-jsx-a11y": "^5",
-    "eslint-plugin-react": "^7"
+    "@electron-forge/cli": "^6.0.0-beta.61",
+    "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
+    "@electron-forge/maker-zip": "^6.0.0-beta.61",
+    "electron": "16.0.7"
   }
 }
