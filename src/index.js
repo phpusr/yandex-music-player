@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, BrowserView, nativeTheme, ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, nativeTheme } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
@@ -88,6 +88,6 @@ function createMenu() {
 
 function getIcon() {
   const isDarkMode = nativeTheme.shouldUseDarkColors
-  const iconName = isDarkMode ? 'icon_add' : 'icon_main'
+  const iconName = isDarkMode ? 'dark_icon' : 'main_icon'
   return `${__dirname}/../assets/icons/${iconName}.png`
 }
