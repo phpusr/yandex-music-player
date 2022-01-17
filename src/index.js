@@ -1,5 +1,10 @@
 const { app, BrowserWindow, Menu, BrowserView, nativeTheme } = require('electron')
 
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+  app.quit();
+}
+
 let mainWindow
 let webContents
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'
@@ -18,7 +23,7 @@ function main() {
     }
   })
   app.on('activate', () => {
-    if (mainWindow === null) {
+    if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
     }
   })
@@ -29,9 +34,6 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     title: 'Yandex Music Player',
     icon: getIcon(),
-  })
-  mainWindow.on('closed', () => {
-    mainWindow = null
   })
 
   // Player View
