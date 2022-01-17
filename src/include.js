@@ -5,64 +5,75 @@ function q(selector) {
   return document.querySelector(selector)
 }
 
-window.ympAPI.play(() => window.externalAPI.togglePause(''))
-window.ympAPI.pause(() => window.externalAPI.togglePause('PAUSE'))
-window.ympAPI.playPause(() => q(PLAY_BUTTON).click())
-window.ympAPI.next(() => window.externalAPI.next())
-window.ympAPI.prev(() => window.externalAPI.prev())
-window.ympAPI.setPosition(position => window.externalAPI.setPosition(position / ONE_M))
+class YandexMusicPlayer {
+  constructor(externalAPI) {
+    this.externalAPI = externalAPI
+    this.initCallbacks()
 
-setInterval(() => {
-  sendMetadata()
-  hideAds()
-}, 1000)
-
-function sendMetadata() {
-  const currentTrack = window.externalAPI.getCurrentTrack()
-
-  if (!currentTrack) {
-    return
+    setInterval(() => {
+      this.sendMetadata()
+      this.hideAds()
+    }, 1000)
   }
 
-  const metadata = {
-    trackId: currentTrack.link.substr(1),
-    title: currentTrack.title,
-    album: currentTrack.album.title,
-    artists: currentTrack.artists.map(a => a.title),
-    artUrl: `https://${currentTrack.cover.replace('%%', '300x300')}`,
-    length: secondsToMicroSeconds(currentTrack.duration),
-    seek: secondsToMicroSeconds(window.externalAPI.getProgress().position)
+  initCallbacks() {
+    window.ympAPI.play(() => this.externalAPI.togglePause(''))
+    window.ympAPI.pause(() => this.externalAPI.togglePause('PAUSE'))
+    window.ympAPI.playPause(() => q(PLAY_BUTTON).click())
+    window.ympAPI.next(() => this.externalAPI.next())
+    window.ympAPI.prev(() => this.externalAPI.prev())
+    window.ympAPI.setPosition(position => this.externalAPI.setPosition(position / ONE_M))
   }
 
-  if (window.externalAPI.isPlaying()) {
-    metadata.playbackStatus = 'Playing'
-  } else {
-    metadata.playbackStatus = 'Paused'
-  }
+  sendMetadata() {
+    const currentTrack = this.externalAPI.getCurrentTrack()
 
-  window.ympAPI.sendMetadata(metadata)
-}
-
-function secondsToMicroSeconds(seconds) {
-  return Math.round(seconds * ONE_M)
-}
-
-function hideAds() {
-  // Clicking by close button
-  const CloseAdButtonClasses = ['.d-overhead__close button', '.payment-plus__header-close']
-  CloseAdButtonClasses.forEach((adClass) => {
-    const adButtonDom = q(adClass)
-    if (adButtonDom) {
-      adButtonDom.click()
+    if (!currentTrack) {
+      return
     }
-  })
 
-  // Hiding ads
-  const hideAdClasses = ['.bar-below_plus', '.notify', '.bar__branding']
-  hideAdClasses.forEach((adClass) => {
-    const adDom = q(adClass)
-    if (adDom) {
-      adDom.style.display = 'none'
+    const metadata = {
+      trackId: currentTrack.link.substr(1),
+      title: currentTrack.title,
+      album: currentTrack.album.title,
+      artists: currentTrack.artists.map(a => a.title),
+      artUrl: `https://${currentTrack.cover.replace('%%', '300x300')}`,
+      length: this.secondsToMicroSeconds(currentTrack.duration),
+      seek: this.secondsToMicroSeconds(this.externalAPI.getProgress().position)
     }
-  })
+
+    if (this.externalAPI.isPlaying()) {
+      metadata.playbackStatus = 'Playing'
+    } else {
+      metadata.playbackStatus = 'Paused'
+    }
+
+    window.ympAPI.sendMetadata(metadata)
+  }
+
+  secondsToMicroSeconds(seconds) {
+    return Math.round(seconds * ONE_M)
+  }
+
+  hideAds() {
+    // Clicking by close button
+    const CloseAdButtonClasses = ['.d-overhead__close button', '.payment-plus__header-close']
+    CloseAdButtonClasses.forEach((adClass) => {
+      const adButtonDom = q(adClass)
+      if (adButtonDom) {
+        adButtonDom.click()
+      }
+    })
+
+    // Hiding ads
+    const hideAdClasses = ['.bar-below_plus', '.notify', '.bar__branding']
+    hideAdClasses.forEach((adClass) => {
+      const adDom = q(adClass)
+      if (adDom) {
+        adDom.style.display = 'none'
+      }
+    })
+  }
 }
+
+const ympApp = new YandexMusicPlayer(window.externalAPI)
