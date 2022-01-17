@@ -94,13 +94,6 @@ class YandexMusicPlayer {
         adDom.style.display = 'none'
       }
     })
-
-    // Fixing auto pause with ad
-    const button = q('.crackdown-popup__close')
-    if (button && !button.parentNode.classList.contains('popup_hidden')) {
-      button.click()
-      q(PLAY_BUTTON).click()
-    }
   }
 }
 
