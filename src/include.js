@@ -59,8 +59,9 @@ class YandexMusicPlayer {
     // Clicking by close button
     const CloseAdButtonClasses = ['.d-overhead__close button', '.payment-plus__header-close']
     CloseAdButtonClasses.forEach((adClass) => {
+      const equalizerIsOpen = q('.d-equalizer__popup').classList.contains('d-equalizer__popup_edit')
       const adButtonDom = q(adClass)
-      if (adButtonDom) {
+      if (adButtonDom && !equalizerIsOpen) {
         adButtonDom.click()
       }
     })
