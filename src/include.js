@@ -56,8 +56,13 @@ class YandexMusicPlayer {
   }
 
   hideAds() {
+    // Check for open pop-ups
+    if (q('.deco-pane-secondary.deco_shadow-light')) {
+      return
+    }
+
     // Clicking by close button
-    const CloseAdButtonClasses = ['.d-overhead__close button', '.payment-plus__header-close']
+    const CloseAdButtonClasses = ['.d-overhead__close button', '.payment-plus__header-close', '.pay-promo-close-btn']
     CloseAdButtonClasses.forEach((adClass) => {
       const equalizerIsOpen = q('.d-equalizer__popup').classList.contains('d-equalizer__popup_edit')
       const adButtonDom = q(adClass)
